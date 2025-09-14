@@ -15,6 +15,7 @@ import io.papermc.paper.dialog.PaperDialog;
 import io.papermc.paper.entity.LookAnchor;
 import io.papermc.paper.entity.PaperPlayerGiveResult;
 import io.papermc.paper.entity.PlayerGiveResult;
+import io.papermc.paper.event.player.PlayerTeleportFailEvent;
 import io.papermc.paper.math.Position;
 import io.papermc.paper.util.MCUtil;
 import it.unimi.dsi.fastutil.shorts.ShortArraySet;
@@ -1383,11 +1384,21 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
         // Paper start - Teleport passenger API
         // Don't allow teleporting between worlds while keeping passengers
         if (ignorePassengers && entity.isVehicle() && location.getWorld() != this.getWorld()) {
+            // Paper start - Add PlayerTeleportFailEvent
+            // Create & Call the PlayerTeleportFailEvent.
+            PlayerTeleportFailEvent failEvent = new PlayerTeleportFailEvent(this, location, PlayerTeleportFailEvent.FailReason.PLAYER_IS_VEHICLE);
+            this.server.getPluginManager().callEvent(failEvent);
+            // Paper end - Add PlayerTeleportFailEvent
             return false;
         }
 
         // Don't allow to teleport between worlds if remaining on vehicle
         if (!dismount && entity.isPassenger() && location.getWorld() != this.getWorld()) {
+            // Paper start - Add PlayerTeleportFailEvent
+            // Create & Call the PlayerTeleportFailEvent.
+            PlayerTeleportFailEvent failEvent = new PlayerTeleportFailEvent(this, location, PlayerTeleportFailEvent.FailReason.PLAYER_IS_PASSENGER);
+            this.server.getPluginManager().callEvent(failEvent);
+            // Paper end - Add PlayerTeleportFailEvent
             return false;
         }
         // Paper end
@@ -1396,6 +1407,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
         ServerPlayer entity = this.getHandle();
 
         if (this.getHealth() == 0 || entity.isRemoved()) {
+            // Paper start - Add PlayerTeleportFailEvent
+            // Create & Call the PlayerTeleportFailEvent.
+            PlayerTeleportFailEvent failEvent = new PlayerTeleportFailEvent(this, location, PlayerTeleportFailEvent.FailReason.OTHER);
+            this.server.getPluginManager().callEvent(failEvent);
+            // Paper end - Add PlayerTeleportFailEvent
             return false;
         }
 
@@ -1404,6 +1420,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
         }
 
         if (entity.isVehicle() && !ignorePassengers) { // Paper - Teleport API
+            // Paper start - Add PlayerTeleportFailEvent
+            // Create & Call the PlayerTeleportFailEvent.
+            PlayerTeleportFailEvent failEvent = new PlayerTeleportFailEvent(this, location, PlayerTeleportFailEvent.FailReason.PLAYER_IS_VEHICLE);
+            this.server.getPluginManager().callEvent(failEvent);
+            // Paper end - Add PlayerTeleportFailEvent
             return false;
         }
 
