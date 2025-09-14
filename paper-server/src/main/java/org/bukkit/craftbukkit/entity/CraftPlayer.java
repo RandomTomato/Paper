@@ -469,7 +469,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
     @Override
     public void setPlayerListHeaderFooter(@Nullable BaseComponent header, @Nullable BaseComponent footer) {
         this.setPlayerListHeaderFooter(header == null ? null : new BaseComponent[]{header},
-                footer == null ? null : new BaseComponent[]{footer});
+            footer == null ? null : new BaseComponent[]{footer});
     }
 
     @Override
