@@ -21,6 +21,7 @@ import io.papermc.paper.entity.PaperPlayerPostEffects;
 import io.papermc.paper.entity.PlayerGiveResult;
 import io.papermc.paper.entity.PlayerPostEffects;
 import io.papermc.paper.math.Angle;
+import io.papermc.paper.event.player.PlayerTeleportFailEvent;
 import io.papermc.paper.math.Position;
 import io.papermc.paper.util.MCUtil;
 import it.unimi.dsi.fastutil.shorts.ShortArraySet;
@@ -1320,6 +1321,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
         // Minecraft does not currently support teleporting players between worlds with passengers.
         // It causes them to be dismounted, and causes weird behavior.
         if (location.getWorld() != this.getWorld() && this.getHandle().isVehicle()) {
+            // Paper start - Add PlayerTeleportFailEvent
+            // Create & Call the PlayerTeleportFailEvent.
+            PlayerTeleportFailEvent failEvent = new PlayerTeleportFailEvent(this, location, PlayerTeleportFailEvent.FailReason.PLAYER_IS_VEHICLE);
+            this.server.getPluginManager().callEvent(failEvent);
+            // Paper end - Add PlayerTeleportFailEvent
             return false;
         }
 
