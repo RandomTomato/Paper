@@ -22,6 +22,7 @@ import io.papermc.paper.entity.PlayerGiveResult;
 import io.papermc.paper.entity.PlayerPostEffects;
 import io.papermc.paper.math.Angle;
 import io.papermc.paper.event.player.PlayerTeleportFailEvent;
+import io.papermc.paper.math.Angle;
 import io.papermc.paper.math.Position;
 import io.papermc.paper.util.MCUtil;
 import it.unimi.dsi.fastutil.shorts.ShortArraySet;
